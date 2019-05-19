@@ -1,18 +1,48 @@
 import "./style.css";
 
 const XHR = ("onload" in new XMLHttpRequest()) ? XMLHttpRequest : XDomainRequest;
+const xhr = new XHR();
+const KEY = "AIzaSyC3Mhk7GqVcazsOCbtyDi60q5pm00an-Rk";
 let videosList = [];
 let videosInfo = [];
-const xhr = new XHR();
 let elem = document.body;
-
-
-const KEY = "AIzaSyC3Mhk7GqVcazsOCbtyDi60q5pm00an-Rk";
-
 let uploadedVideo = 0;
-//console.log("hello,word");
-//console.log("hello,word");
 let urlPicture;
+
+
+
+createSeacrh();
+
+
+
+function createSeacrh() {
+  let searchEleme = document.body;
+  let page='';
+  page=`<input value='' type='text' id='searchText' placeholder='I wil find ever you want'><button id='button'>Start search</button>
+<div id="one"></div>
+<div class="slider">
+    <div class="slider__wrapper" id="slider">
+        <div class="slider__item" >
+            <div style="height:600px; background: orange;">1</div>
+        </div>
+        <div class="slider__item">
+            <div style="height: 600px; background: green;">2</div>
+        </div>
+        <div class="slider__item">
+            <div style="height: 600px; background: violet;">3</div>
+        </div>
+        <div class="slider__item">
+            <div style="height: 600px; background: coral;">4</div>
+        </div>
+
+
+    </div>
+    <a class="slider__control slider__control_left" href="#" role="button"></a>
+    <a class="slider__control slider__control_right slider__control_show" href="#" role="button"></a>`;
+
+  searchEleme.innerHTML=page;
+}
+
 
 function search() {
   const KEYWORD = document.querySelector("#searchText").value;
@@ -22,26 +52,14 @@ function search() {
   console.log(URL);
   xhr.open("GET", URL, true);
   xhr.onload = function(name, value) {
-
     videosList = JSON.parse(this.response);
-    //  alert( this.responseText.toString().split(",")[4]);
-    console.log(videosList);
-    //  console.log(videosList.items[0].snippet.thumbnails.high.url);
     urlPicture = (videosList.items[0].snippet.thumbnails.high.url);
-    alert(urlPicture);
-
-
     drawPage();
   };
-
   xhr.onerror = function() {
     alert("Ошибка " + this.status);
   };
-
   xhr.send();
-}
-
-function uploadLinks() {
 }
 
 function drawPage() {
@@ -49,22 +67,20 @@ function drawPage() {
   let card = "";
   for (let i = 0; i < 15; i++) {
     urlPicture = (videosList.items[i].snippet.thumbnails.high.url);
-     let channeltitlePicture = videosList.items[i].snippet.channelTitle;
-     let descriptionPicture = videosList.items[i].snippet.description;
-     let link=videosList.items[i].id.videoId;
-     console.log(link);
-     let titlePicture = videosList.items[i].snippet.title;
+    let channeltitlePicture = videosList.items[i].snippet.channelTitle;
+    let descriptionPicture = videosList.items[i].snippet.description;
+    let link = videosList.items[i].id.videoId;
+    let titlePicture = videosList.items[i].snippet.title;
     card += `<div class="slider__item"><a href="https://www.youtube.com/watch?v=${link}"><img hspace="5" vspace="5" src="${urlPicture}" alt='video preview'></a>
 <p><strong>Channel</strong>:${channeltitlePicture}</p>
-<p>Description:${descriptionPicture}</p>
+<p><strong>Description</strong>:${descriptionPicture}</p>
 <p> ${titlePicture}</p>
 </div>`;
   }
   d1.innerHTML = card;
-   let _slider= document.querySelector(".slider");
-  _slider.style.display="block";
+  let _slider = document.querySelector(".slider");
+  _slider.style.display = "block";
   var slider = multiItemSlider(".slider");
-
 }
 
 document.querySelector("#button").addEventListener("click", search);
@@ -74,7 +90,7 @@ var multiItemSlider = (function() {
 
   return function(selector, config) {
     var
-      _slider= document.querySelector(".slider"),
+      _slider = document.querySelector(".slider"),
       _mainElement = document.querySelector(selector), // основный элемент блока
       _sliderWrapper = _mainElement.querySelector(".slider__wrapper"), // обертка для .slider-item
       _sliderItems = _mainElement.querySelectorAll(".slider__item"), // элементы (.slider-item)
