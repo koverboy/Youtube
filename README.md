@@ -1,2 +1,2 @@
 # Youtube
- https://koverboy.github.io/Youtube/
+ https://koverboy.github.io/Youtube/dist/
